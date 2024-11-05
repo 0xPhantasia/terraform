@@ -21,7 +21,7 @@ resource "aws_security_group" "bastion-sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4_in" {
+resource "aws_vpc_security_group_ingress_rule" "bastion_allow_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
   cidr_ipv4 = aws_vpc.vpc.cidr_block
   from_port = 22
@@ -29,7 +29,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4_in" {
   to_port = 22
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_ssh_ipv4_out" {
+resource "aws_vpc_security_group_egress_rule" "bastion_allow_all_ipv4_out" { #Corriger le nom si changement
   security_group_id = aws_security_group.bastion-sg.id
   cidr_ipv4         = "0.0.0.0/0" #Mettre IP dynamique instance Nextcloud
   ip_protocol       = "-1" #Mettre SSH 
@@ -58,7 +58,7 @@ resource "aws_security_group" "nextcloud-sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4_in" {
+resource "aws_vpc_security_group_ingress_rule" "nextcloud_allow_ssh_ipv4_in" {
   security_group_id = aws_security_group.nextcloud-sg.id
   cidr_ipv4 = aws_vpc.vpc.cidr_block
   from_port = 22
@@ -66,7 +66,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4_in" {
   to_port = 22
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_ssh_ipv4_out" {
+resource "aws_vpc_security_group_egress_rule" "nextcloud_allow_all_ipv4_out" { #Corriger le nom si changement
   security_group_id = aws_security_group.nextcloud-sg.id
   cidr_ipv4         = "0.0.0.0/0" #Vérifier
   ip_protocol       = "-1" #Vérifier
