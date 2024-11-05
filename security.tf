@@ -27,7 +27,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
 
 resource "aws_vpc_security_group_egress_rule" "allow_bastion_ssh_ipv4_out" {
   security_group_id = aws_security_group.bastion-sg.id
-  cidr_ipv4         = "${aws_instance.nextcloud.public_ip}"/32
+  cidr_ipv4         = "${aws_instance.nextcloud.public_ip}/32"
   ip_protocol       = "tcp"
 }
 
@@ -52,7 +52,7 @@ resource "aws_security_group" "nextcloud-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_nextcloud_ssh_ipv4_in" {
   security_group_id = aws_security_group.nextcloud-sg.id
-  cidr_ipv4         = "${aws_instance.bastion.public_ip}"/32
+  cidr_ipv4         = "${aws_instance.bastion.public_ip}/32"
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
