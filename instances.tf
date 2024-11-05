@@ -22,6 +22,7 @@ resource "aws_instance" "nextcloud" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.private_subnets[keys(aws_subnet.private_subnets)[0]].id
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
+  key_name = aws_key_pair.nextcloud
 
   tags = {
     Name = "${local.user}-nextcloud"
@@ -34,6 +35,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t3.micro"
   subnet_id = aws_subnet.public_subnets[keys(aws_subnet.public_subnets)[0]].id
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+  key_name = aws_key_pair.bastion
 
   tags = {
     Name = "${local.user}-bastion"
