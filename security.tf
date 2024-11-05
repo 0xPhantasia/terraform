@@ -1,3 +1,8 @@
+# Fetch the public IP of the C9 instance
+data "http" "c9_public_ip" {
+  url = "https://api.ipify.org"
+}
+
 # Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
   vpc_id = aws_vpc.vpc.id
