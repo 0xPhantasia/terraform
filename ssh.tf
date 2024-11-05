@@ -12,14 +12,14 @@ resource "tls_private_key" "nextcloud" {
 
 # Export Bastion SSH key to C9 instance
 resource "local_file" "bastion-ssh" {
-  content = tls_private_key.bastion.private_key_openssh
-  filename = "./ssl/bastion-ssh"
+  content = tls_private_key.bastion.private_key_pem
+  filename = "./ssl/bastion-ssh.pem"
 }
 
 # Export Nextcloud SSH key to C9 instance
 resource "local_file" "nextcloud-ssh" {
-  content = tls_private_key.nextcloud.private_key_openssh
-  filename = "./ssl/nextcloud-ssh"
+  content = tls_private_key.nextcloud.private_key_pem
+  filename = "./ssl/nextcloud-ssh.pem"
 }
 
 # Import Bastion SSH key in AWS
