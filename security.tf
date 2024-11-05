@@ -6,7 +6,7 @@ resource "aws_security_group" "bastion-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.42.42.154/24"]  # Restrict SSH access to C9 instance
+    cidr_blocks = ["10.42.42.154/32"]  # Restrict SSH access to C9 instance
   }
 
   egress { #Should be restricted to ssh to nextcloud instance
