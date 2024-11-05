@@ -1,3 +1,27 @@
+# Bastion SSH key
+resource "tls_private_key" "bastion" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+# Nextcloud SSH key
+resource "tls_private_key" "nextcloud" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+# Import Bastion SSH key in AWS
+resource "aws_key_pair" "bastion" {
+  key_name   = "${local.name}-bastion"
+  public_key = file("ssh/bastion.pub")
+}
+
+# Import Nextcloud SSH key in AWS
+resource "aws_key_pair" "bastion" {
+  key_name   = "${local.name}-bastion"
+  public_key = file("ssh/nextcloud.pub")
+}
+
 # Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
   vpc_id = aws_vpc.vpc.id
