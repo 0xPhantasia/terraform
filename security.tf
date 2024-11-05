@@ -19,7 +19,7 @@ resource "aws_security_group" "bastion-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
-  cidr_ipv4         = ["13.38.45.246/32/32"] # Make dynamic
+  cidr_ipv4         = "13.38.45.246/32/32" # Make dynamic
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
