@@ -28,8 +28,7 @@ resource "aws_instance" "nextcloud" {
 #  }
 
   tags = {
-    Name = "local.name"
-    Owner = "local.user"
+    Name = "${local.user}-nextcloud"
   }
 }
 
@@ -45,7 +44,6 @@ resource "aws_instance" "bastion" {
 #  }
 
   tags = {
-    Name = "local.name"
-    Owner = "local.user"
+    Name = "${local.user}-bastion"
   }
 }

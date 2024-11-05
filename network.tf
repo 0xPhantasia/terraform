@@ -35,11 +35,6 @@ resource "aws_subnet" "public_subnets" {
   cidr_block = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
   availability_zone = local.azs[each.value - 1]
   map_public_ip_on_launch = true
-
-  tags = {
-    Name = local.name
-    Owner = local.user
-  }
 }
 
 #Create route tables for public and private subnets
@@ -50,10 +45,6 @@ resource "aws_route_table" "public_route_table" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway.id
   }
-  tags = {
-    Name = local.name
-    Owner = local.user
-  }
 }
 
 resource "aws_route_table" "private_route_table" {
@@ -63,10 +54,6 @@ resource "aws_route_table" "private_route_table" {
     cidr_block = "0.0.0.0/0"
     gateway_id     = aws_internet_gateway.internet_gateway.id
     #nat_gateway_id = aws_nat_gateway.nat_gateway.id
-  }
-  tags = {
-    Name = local.name
-    Owner = local.user
   }
 }
 
@@ -88,8 +75,4 @@ resource "aws_route_table_association" "private" {
 #Create Internet Gateway
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
-  tags = {
-    Name = local.name
-    Owner = local.user
-  }
 }
