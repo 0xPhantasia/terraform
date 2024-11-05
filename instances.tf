@@ -1,18 +1,13 @@
-# Retrieve the latest Ubuntu 20.04 LTS AMI
+# Retrieve the latest Ubuntu AMD64 AMI
 data "aws_ami" "ubuntu_latest" {
   most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"]
+  virtualization_type = "hvm"
+  owner_id = "099720109477"
+  name = "ubuntu*"
+#  filter {
+#    name   = "name"
+#    values = ["ubuntu/images/hvm-ssd/ubuntu-*-amd64-server-*"]
+#  }
 }
 
 
