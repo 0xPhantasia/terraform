@@ -20,7 +20,7 @@ data "aws_ami" "ubuntu_latest" {
 resource "aws_instance" "nextcloud" {
   ami = data.aws_ami.ubuntu_latest.id
   instance_type = "t3.micro"
-  subnet_id = aws_subnet.private_subnets["0"].id
+  subnet_id = aws_subnet.private_subnets[lookup(keys(aws_subnet.private_subnets), 0)].id
   security_groups = [aws_security_group.nextcloud-sg.name]
 #  network_interface {
 #    device_index = 0
@@ -37,7 +37,7 @@ resource "aws_instance" "nextcloud" {
 resource "aws_instance" "bastion" {
   ami = "ami-00d81861317c2cc1f"
   instance_type = "t3.micro"
-  subnet_id = aws_subnet.public_subnets["0"].id
+  subnet_id = aws_subnet.public_subnets[lookup(keys(aws_subnet.public_subnets), 0)].id
   security_groups = [aws_security_group.bastion-sg.name]
 #  network_interface {
 #    device_index = 0
