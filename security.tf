@@ -13,13 +13,13 @@ resource "tls_private_key" "nextcloud" {
 # Import Bastion SSH key in AWS
 resource "aws_key_pair" "bastion" {
   key_name   = "${local.name}-bastion"
-  public_key = tls_private_key.bastion.public_key_pem
+  public_key = tls_private_key.bastion.public_key_openssh
 }
 
 # Import Nextcloud SSH key in AWS
 resource "aws_key_pair" "nextcloud" {
   key_name   = "${local.name}-bastion"
-  public_key = tls_private_key.nextcloud.public_key_pem
+  public_key = tls_private_key.nextcloud.public_key_openssh
 }
 
 # Bastion Security Group
