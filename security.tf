@@ -17,7 +17,7 @@ resource "aws_key_pair" "bastion" {
 }
 
 # Import Nextcloud SSH key in AWS
-resource "aws_key_pair" "bastion" {
+resource "aws_key_pair" "nextcloud" {
   key_name   = "${local.name}-bastion"
   public_key = file("ssh/nextcloud.pub")
 }
