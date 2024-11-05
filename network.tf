@@ -8,11 +8,6 @@ locals {
 #Deploy VPC
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
-
-  tags = {
-    Name = local.name
-    Owner = local.user
-  }
 }
 
 #Deploy the private subnets
@@ -21,11 +16,6 @@ resource "aws_subnet" "private_subnets" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = cidrsubnet(var.vpc_cidr, 8, each.value)
   availability_zone = local.azs[each.value - 1]
-
-  tags = {
-    Name = local.name
-    Owner = local.user
-  }
 }
 
 #Deploy the public subnets
