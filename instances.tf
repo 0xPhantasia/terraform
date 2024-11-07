@@ -25,7 +25,7 @@ resource "aws_instance" "nextcloud" {
   key_name = aws_key_pair.nextcloud.key_name
 
   tags = {
-    Name = "${local.user}-${local.name}-nextcloud"
+    Name = "${local.name}-nextcloud"
   }
 }
 
@@ -37,6 +37,6 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
   key_name = aws_key_pair.bastion.key_name
   tags = {
-    Name = "${local.user}-${local.name}-bastion"
+    Name = "${local.name}-bastion"
   }
 }
