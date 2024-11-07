@@ -44,9 +44,12 @@ resource "aws_vpc_security_group_egress_rule" "allow_nextcloud_all_ipv4_out" {
   ip_protocol       = "-1"
 }
 
+#Restrain access to ressources from C9 instances
 resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
   vpc_id = aws_vpc.vpc.id
-
+  subnet_ids = each.value.id
+  for_each       = aws_subnet.subnets
+  
   ingress {
     protocol   = "tcp"
     rule_no    = 50
