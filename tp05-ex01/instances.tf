@@ -15,10 +15,6 @@ data "aws_ami" "ubuntu_latest" {
   }
 }
 
-data "aws_instances" "nextcloud_ip" {
-  
-}
-
 #Create Nextcloud VM
 resource "aws_instance" "nextcloud" {
   ami                    = data.aws_ami.ubuntu_latest.id
