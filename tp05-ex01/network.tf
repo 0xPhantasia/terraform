@@ -67,3 +67,11 @@ resource "aws_route_table_association" "private" {
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 }
+
+#Create NAT gateway
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.example.id
+  subnet_id     = aws_subnet.private_subnets[keys(aws_subnet.private_subnets)[0]].id #Ugly
+  depends_on = [aws_internet_gateway.internet_gateway]
+}
+
