@@ -11,8 +11,8 @@ resource "aws_security_group" "bastion-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
-  #  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
-  cidr_ipv4   = "195.7.117.146/32"
+  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
+#  cidr_ipv4   = "195.7.117.146/32"
   from_port   = 22
   ip_protocol = "tcp"
   to_port     = 22
