@@ -81,9 +81,16 @@ resource "aws_network_acl" "acl" {
 }
 
 #Applying ACL to all VPC subnets
-resource "aws_network_acl_association" "acl_association" {
+resource "aws_network_acl_association" "acl_association_private_subnets" {
   network_acl_id = aws_network_acl.acl.id
-  for_each       = aws_subnet.all
+  for_each       = aws_subnet.private_subnets
+  subnet_id      = each.value.id
+}
+
+#Applying ACL to all VPC subnets
+resource "aws_network_acl_association" "acl_association_public_subnets" {
+  network_acl_id = aws_network_acl.acl.id
+  for_each       = aws_subnet.public_subnets
   subnet_id      = each.value.id
 }
 
