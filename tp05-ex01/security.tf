@@ -81,19 +81,19 @@ resource "aws_vpc_security_group_egress_rule" "allow_efs_all_ipv4_out" {
   ip_protocol       = "-1"
 }
 
-#ACL restraining access to ressources from C9 instances
-resource "aws_network_acl" "acl" {
-  vpc_id = aws_vpc.vpc.id
-  
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 50
-    action     = "deny"
-    cidr_block = "13.38.91.0/24"
-    from_port  = 22
-    to_port    = 22
-  }
-}
+##ACL restraining access to ressources from C9 instances
+#resource "aws_network_acl" "acl" {
+#  vpc_id = aws_vpc.vpc.id
+#  
+#  ingress {
+#    protocol   = "tcp"
+#    rule_no    = 50
+#    action     = "deny"
+#    cidr_block = "13.38.91.0/24"
+#    from_port  = 22
+#    to_port    = 22
+#  }
+#}
 
 #Applying ACL to all VPC subnets
 resource "aws_network_acl_association" "acl_association_private_subnets" {
