@@ -12,18 +12,18 @@ resource "aws_vpc" "vpc" {
 
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
-  for_each = var.private_subnets
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = cidrsubnet(var.vpc_cidr, 8, each.value)
+  for_each          = var.private_subnets
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.value)
   availability_zone = local.azs[each.value - 1]
 }
 
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
-  for_each = var.public_subnets
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
-  availability_zone = local.azs[each.value - 1]
+  for_each                = var.public_subnets
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
+  availability_zone       = local.azs[each.value - 1]
   map_public_ip_on_launch = true
 }
 
@@ -42,24 +42,24 @@ resource "aws_route_table" "private_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id     = aws_internet_gateway.internet_gateway.id
+    gateway_id = aws_internet_gateway.internet_gateway.id
     #nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
 }
 
 #Create route table associations
 resource "aws_route_table_association" "public" {
-  depends_on = [aws_subnet.public_subnets]
+  depends_on     = [aws_subnet.public_subnets]
   route_table_id = aws_route_table.public_route_table.id
-  for_each = aws_subnet.public_subnets
-  subnet_id = each.value.id
+  for_each       = aws_subnet.public_subnets
+  subnet_id      = each.value.id
 }
 
 resource "aws_route_table_association" "private" {
-  depends_on = [aws_subnet.private_subnets]
+  depends_on     = [aws_subnet.private_subnets]
   route_table_id = aws_route_table.private_route_table.id
-  for_each = aws_subnet.private_subnets
-  subnet_id = each.value.id
+  for_each       = aws_subnet.private_subnets
+  subnet_id      = each.value.id
 }
 
 #Create Internet Gateway

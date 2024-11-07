@@ -1,7 +1,7 @@
-# Fetch the public IP of the C9 instance
-data "http" "c9_public_ip" {
-  url = "https://api.ipify.org"
-}
+## Fetch the public IP of the C9 instance
+#data "http" "c9_public_ip" {
+#  url = "https://api.ipify.org"
+#}
 
 # Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
@@ -10,10 +10,11 @@ resource "aws_security_group" "bastion-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
-  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
-  from_port         = 22
-  ip_protocol       = "tcp"
-  to_port           = 22
+  #  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
+  cidr_ipv4   = "195.7.117.146/32"
+  from_port   = 22
+  ip_protocol = "tcp"
+  to_port     = 22
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_bastion_ssh_ipv4_out" {

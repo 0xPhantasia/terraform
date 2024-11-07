@@ -12,15 +12,15 @@ resource "tls_private_key" "nextcloud" {
 
 # Export Bastion SSH key to C9 instance
 resource "local_file" "bastion" {
-  content = tls_private_key.bastion.private_key_pem
-  filename = "${path.module}/bastion-ssh.pem"
+  content         = tls_private_key.bastion.private_key_pem
+  filename        = "${path.module}/bastion-ssh.pem"
   file_permission = "0400"
 }
 
 # Export Nextcloud SSH key to C9 instance
 resource "local_file" "nextcloud" {
-  content = tls_private_key.nextcloud.private_key_pem
-  filename = "${path.module}/nextcloud-ssh.pem"
+  content         = tls_private_key.nextcloud.private_key_pem
+  filename        = "${path.module}/nextcloud-ssh.pem"
   file_permission = "0400"
 }
 
