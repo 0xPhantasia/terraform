@@ -5,6 +5,7 @@
 
 # Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
+  description = "Nextcloud Security Group"
   vpc_id = aws_vpc.vpc.id
 }
 
@@ -27,6 +28,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_bastion_ssh_ipv4_out" {
 
 # Nextcloud Security Group
 resource "aws_security_group" "nextcloud-sg" {
+  description = "Nextcloud Security Group"
   vpc_id = aws_vpc.vpc.id
 }
 
@@ -56,3 +58,9 @@ resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
     to_port    = 22
   }
 }
+
+resource "aws_security_group" "efs-sg" {
+  description = "EFS Security Group"
+  vpc_id      = aws_vpc.vpc.id
+}
+
