@@ -66,11 +66,9 @@ resource "aws_vpc_security_group_egress_rule" "allow_efs_all_ipv4_out" {
   ip_protocol       = "-1"
 }
 
-#Restrain access to ressources from C9 instances
-resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
+#ACL restraining access to ressources from C9 instances
+resource "aws_network_acl" "acl" {
   vpc_id = aws_vpc.vpc.id
-  subnet_ids = each.value.id
-  for_each       = aws_subnet.*
   
   ingress {
     protocol   = "tcp"
@@ -81,5 +79,13 @@ resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
     to_port    = 22
   }
 }
+
+#Applying ACL to all VPC subnets
+resource "aws_network_acl_association" "acl_association" {
+  network_acl_id = aws_network_acl.acl.id
+  for_each       = aws_subnet.all
+  subnet_id      = each.value.id
+}
+
 
 
