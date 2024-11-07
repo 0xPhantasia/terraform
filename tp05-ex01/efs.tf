@@ -14,9 +14,9 @@ resource "aws_efs_file_system" "nextcloud-fs" {
 }
 
 resource "aws_efs_mount_target" "nextcloud-fs-mounts" {
-  count          = length(aws_subnet.private_subnets)
+  count          = length(aws_subnet.private_subnets.id)
   file_system_id = aws_efs_file_system.nextcloud-fs.id
-  subnet_id      = element(aws_subnet.private_subnets, count.index)
+  subnet_id      = element(aws_subnet.private_subnets.id, count.index)
   security_groups = [
     aws_security_group.efs-sg.id
   ]
