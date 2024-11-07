@@ -43,3 +43,16 @@ resource "aws_vpc_security_group_egress_rule" "allow_nextcloud_all_ipv4_out" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
+
+resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 50
+    action     = "deny"
+    cidr_block = "13.38.91.149/20"
+    from_port  = 22
+    to_port    = 22
+  }
+}
