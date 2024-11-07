@@ -51,7 +51,7 @@ resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
     protocol   = "tcp"
     rule_no    = 50
     action     = "deny"
-    cidr_block = "13.38.91.149/20"
+    cidr_block = "13.38.91.0/24"
     from_port  = 22
     to_port    = 22
   }
