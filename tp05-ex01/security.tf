@@ -70,7 +70,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_efs_all_ipv4_out" {
 resource "aws_network_acl" "deny_c9_ssh_ipv4_in" {
   vpc_id = aws_vpc.vpc.id
   subnet_ids = each.value.id
-  for_each       = aws_subnet.subnets
+  for_each       = aws_subnet.*
   
   ingress {
     protocol   = "tcp"
