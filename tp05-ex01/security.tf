@@ -1,7 +1,7 @@
-## Fetch the public IP of the C9 instance
-#data "http" "c9_public_ip" {
-#  url = "https://api.ipify.org"
-#}
+# Fetch the public IP of the C9 instance
+data "http" "c9_public_ip" {
+  url = "https://api.ipify.org"
+}
 
 # Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
@@ -87,12 +87,12 @@ resource "aws_network_acl_association" "acl_association_private_subnets" {
   subnet_id      = each.value.id
 }
 
-#Applying ACL to all VPC subnets
-resource "aws_network_acl_association" "acl_association_public_subnets" {
-  network_acl_id = aws_network_acl.acl.id
-  for_each       = aws_subnet.public_subnets
-  subnet_id      = each.value.id
-}
+##Applying ACL to all VPC subnets
+#resource "aws_network_acl_association" "acl_association_public_subnets" {
+#  network_acl_id = aws_network_acl.acl.id
+#  for_each       = aws_subnet.public_subnets
+#  subnet_id      = each.value.id
+#}
 
 
 
