@@ -43,7 +43,6 @@ resource "aws_route_table" "private_route_table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-#    gateway_id = aws_internet_gateway.internet_gateway.id
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
 }
@@ -76,7 +75,7 @@ resource "aws_eip" "eip" {
 #Create NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip.allocation_id
-  subnet_id     = aws_subnet.private_subnets[keys(aws_subnet.private_subnets)[0]].id #Ugly
+  subnet_id     = aws_subnet.public_subnets[keys(aws_subnet.public_subnets)[0]].id #Ugly
   depends_on = [aws_internet_gateway.internet_gateway]
 }
 
