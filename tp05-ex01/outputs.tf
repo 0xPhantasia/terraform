@@ -18,7 +18,7 @@ output "public_ips" {
   value = [for instance in data.aws_instance.instance_details : instance.public_ip]
 }
 
-output "public_ips" {
+output "private_ips" {
   value = [for instance in data.aws_instance.instance_details : instance.private_ip]
 }
 
