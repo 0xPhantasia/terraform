@@ -1,9 +1,9 @@
-data "aws_instances" "instances_list" {
-  filter {
-    name = "tag:Owner"
-    values = [local.user]
-  }
-}
+#data "aws_instances" "instances_list" {
+#  filter {
+#    name = "tag:Owner"
+#    values = [local.user]
+#  }
+#}
 
 #output "instances_list" {
 #  value = "${data.aws_instances.instances_list}"
