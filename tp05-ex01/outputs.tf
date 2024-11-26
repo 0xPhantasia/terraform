@@ -1,18 +1,18 @@
-data "aws_instances" "my_instances" {
+data "aws_instances" "instances_list" {
   filter {
-    name = "Owner"
+    name = "tag:Owner"
     values = [local.user]
   }
 }
 
-output "my_instances" {
-value = "${data.aws_instances.my_instances.ids}"
+output "instances_list" {
+  value = "${data.aws_instances.instances_list}"
 }
 
 output "public_ips" {
-  value = [for instance in aws_instance.my_instances : instance.public_ip]
+  value = [for instance in aws_instance.instances_list : instance.public_ip]
 }
 
 output "private_ips" {
-  value = [for instance in aws_instance.my_instances : instance.private_ip]
+  value = [for instance in aws_instance.instances_list : instance.private_ip]
 }
