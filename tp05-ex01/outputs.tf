@@ -1,6 +1,7 @@
 data "aws_instances" "my_instances" {
   filter {
-    Owner = local.user
+    name = "Owner"
+    values = local.user
   }
 }
 
