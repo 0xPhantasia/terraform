@@ -5,6 +5,10 @@ data "aws_instances" "my_instances" {
   }
 }
 
+output "my_instances" {
+value = "${data.aws_instances.my_instances.ids}"
+}
+
 output "public_ips" {
   value = [for instance in aws_instance.my_instances : instance.public_ip]
 }
