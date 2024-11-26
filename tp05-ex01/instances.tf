@@ -22,6 +22,7 @@ resource "aws_instance" "nextcloud" {
   subnet_id              = aws_subnet.private_subnets[keys(aws_subnet.private_subnets)[0]].id #Ugly
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
   key_name               = aws_key_pair.nextcloud.key_name
+  user_data = "${file("nextcloud-config.sh")}"
 
   tags = {
     Name = "${local.name}-nextcloud"
@@ -35,6 +36,8 @@ resource "aws_instance" "bastion" {
   subnet_id              = aws_subnet.public_subnets[keys(aws_subnet.public_subnets)[0]].id #Ugly
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
   key_name               = aws_key_pair.bastion.key_name
+  user_data = "${file("bastion-config.sh")}"
+
   tags = {
     Name = "${local.name}-bastion"
   }
