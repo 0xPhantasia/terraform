@@ -39,13 +39,6 @@ resource "aws_instance" "bastion" {
   user_data = "${file("bastion-config.sh")}"
 
   tags = {
-    Name = <<-EOF
-      #!/bin/bash
-      # WARNING: This script is insecure and for debugging purposes only.
-
-      # Private key (must already exist on the instance at /home/ubuntu/nextcloud-ssh.pem)
-      scp -i /home/ubuntu/nextcloud-ssh.pem /home/ubuntu/nextcloud-ssh.pem \
-      ubuntu@${aws_instance.bastion.public_ip}:/home/ubuntu/
-      EOF
+    Name = "${local.name}-bastion"
   }
 }
