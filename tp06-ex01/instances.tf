@@ -15,7 +15,7 @@ data "aws_ami" "ubuntu_latest" {
   }
 }
 
-#Create Nextcloud VM
+#Create Nextcloud Instance
 resource "aws_instance" "nextcloud" {
   ami                    = data.aws_ami.ubuntu_latest.id
   instance_type          = "t3.micro"
@@ -29,8 +29,8 @@ resource "aws_instance" "nextcloud" {
     # Update system and ensure everything is up to date.
     apt update -y && sudo apt upgrade -y
     
-    # Install requirement to mount EFS.
-    apt install nfs-common
+    # Install instance requirements.
+    apt install nfs-common mysql-client -y
     
     # Create EFS mount directory.
     mkdir /mnt/efs
@@ -49,7 +49,7 @@ resource "aws_instance" "nextcloud" {
   }
 }
 
-#Create Bastion VM
+#Create Bastion Instance
 resource "aws_instance" "bastion" {
   ami                    = data.aws_ami.ubuntu_latest.id
   instance_type          = "t3.micro"
@@ -61,4 +61,17 @@ resource "aws_instance" "bastion" {
   tags = {
     Name = "${local.name}-bastion"
   }
+}
+
+#Create RDS Instance
+resource "aws_db_instance" "rds" {
+  allocated_storage    = 20
+  instance_class       = "db.t4g.micro"
+  engine               = "mysql"
+  engine_version       = "8.0"
+  username             = "admin"
+  password             = "admin"
+  multi_az             = true
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
+  vpc_security_group_ids = [aws_security_group.rds-sg.id]
 }
