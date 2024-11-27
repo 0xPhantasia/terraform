@@ -30,7 +30,7 @@ resource "aws_subnet" "public_subnets" {
 
 #Deploy DB subnet group
 resource "aws_db_subnet_group" "rds_subnet" {
-  subnet_ids = [${aws_subnet.private_subnets[0].id}, ${aws_subnet.private_subnets[0].id}]
+  subnet_ids = [aws_subnet.private_subnets[0].id, aws_subnet.private_subnets[0].id]
 }
 
 #Create route tables for public and private subnets
