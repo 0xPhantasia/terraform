@@ -13,18 +13,18 @@ resource "aws_vpc" "vpc" {
 
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
-  for_each          = var.private_subnets
+  for_each = { for id, az in zip(range(0, 3), data.aws_availability_zones.available.names) : id => az }
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.value)
-  availability_zone = local.azs[each.value - 1]
+  cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.key)
+  availability_zone = each.value
 }
 
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
-  for_each                = var.public_subnets
+  for_each = { for id, az in zip(range(0, 3), data.aws_availability_zones.available.names) : id => az }
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
-  availability_zone       = local.azs[each.value - 1]
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.key + 100)
+  availability_zone       = each.value
   map_public_ip_on_launch = true
 }
 
