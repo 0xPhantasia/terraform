@@ -13,7 +13,7 @@ resource "aws_vpc" "vpc" {
 
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
-  for_each = { for id, az in zip(range(0, 3), data.aws_availability_zones.available.names) : id => az }
+  for_each = { for id, az in map(range(0, 3), data.aws_availability_zones.available.names) : id => az }
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.key)
   availability_zone = each.value
@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnets" {
 
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
-  for_each = { for id, az in zip(range(0, 3), data.aws_availability_zones.available.names) : id => az }
+  for_each = { for id, az in map(range(0, 3), data.aws_availability_zones.available.names) : id => az }
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.key + 100)
   availability_zone       = each.value
