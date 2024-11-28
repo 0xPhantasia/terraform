@@ -16,7 +16,7 @@ resource "aws_efs_file_system" "nextcloud" {
 
 # Mount EFS to EC2 instances to every private subnet
 resource "aws_efs_mount_target" "nextcloud" {
-  file_system_id = aws_efs_file_system.nextcloud-efs.id
+  file_system_id = aws_efs_file_system.nextcloud.id
   for_each = aws_subnet.private_subnets
   subnet_id      = each.value.id
   security_groups = [
