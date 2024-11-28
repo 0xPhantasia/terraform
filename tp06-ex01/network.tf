@@ -30,7 +30,7 @@ resource "aws_subnet" "public_subnets" {
 
 #Deploy DB subnet group
 resource "aws_db_subnet_group" "rds_subnet" {
-  subnet_ids = [for subnet in aws_subnet.private_subnets : subnet.id]
+  subnet_ids = values(aws_subnet.private_subnets)[*].id
 }
 
 #Create route tables for public and private subnets
@@ -80,7 +80,7 @@ resource "aws_eip" "eip" {
 #Create NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip.allocation_id
-  subnet_id     = aws_subnet.public_subnets[keys(aws_subnet.public_subnets)[0]].id #Ugly
+  subnet_id     = values(aws_subnet.private_subnets)[0].id
   depends_on = [aws_internet_gateway.internet_gateway]
 }
 
