@@ -3,6 +3,9 @@ data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 locals {
   azs = slice(data.aws_availability_zones.available.names, 0, 3)
+  #subnet = {for idx, az in local.azs : idx => az} # Legacy stuff :p
+  private_subnet = {for idx, az in local.azs : az => cidrsubnet(aws_vpc.vpc.cidr_block, 8, idx)}
+  public_subnet = {for idx, az in local.azs : az => cidrsubnet(aws_vpc.vpc.cidr_block, 8, idx + 100)}
 }
 
 #Deploy VPC
@@ -13,18 +16,18 @@ resource "aws_vpc" "vpc" {
 
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
-  for_each = zipmap(range(0, 3), data.aws_availability_zones.available.names)
+  for_each = local.private_subnet
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.key)
-  availability_zone = each.value
+  cidr_block        = each.value
+  availability_zone = each.key
 }
 
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
-  for_each = zipmap(range(0, 3), data.aws_availability_zones.available.names)
+  for_each = local.public_subnet
   vpc_id                  = aws_vpc.vpc.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.key + 100)
-  availability_zone       = each.value
+  cidr_block        = each.value
+  availability_zone = each.key
   map_public_ip_on_launch = true
 }
 
@@ -84,3 +87,10 @@ resource "aws_nat_gateway" "nat_gateway" {
   depends_on = [aws_internet_gateway.internet_gateway]
 }
 
+resource "aws_lb" "nextcloud-alb" {
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.lb-sg.id]
+  subnets            = [for subnet in aws_subnet.public_subnets : subnet.id]
+  enable_deletion_protection = false
+}

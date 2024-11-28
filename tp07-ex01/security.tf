@@ -90,6 +90,12 @@ resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
 }
 
 
+resource "aws_security_group" "lb-sg" {
+  description = "Load Balancer Security Group"
+  vpc_id = aws_vpc.vpc.id
+}
+
+
 #ACL restraining access to ressources from C9 instances
 resource "aws_network_acl" "acl" {
   vpc_id = aws_vpc.vpc.id
