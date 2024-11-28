@@ -70,24 +70,24 @@ resource "aws_vpc_security_group_egress_rule" "allow_efs_nfs_ipv4_out" {
 
 
 ### RDS Security Group
-#resource "aws_security_group" "rds-sg" {
-#  description = "EFS Security Group"
-#  vpc_id      = aws_vpc.vpc.id
-#}
-#
-#resource "aws_vpc_security_group_ingress_rule" "allow_rds_mysql_ipv4_in" {
-#  security_group_id = aws_security_group.rds-sg.id
-#  cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-#  from_port   = 3306
-#  ip_protocol = "tcp"
-#  to_port     = 3306
-#}
-#
-#resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
-#  security_group_id = aws_security_group.rds-sg.id
-#  cidr_ipv4         = "0.0.0.0/0"
-#  ip_protocol       = "-1"
-#}
+resource "aws_security_group" "rds-sg" {
+  description = "EFS Security Group"
+  vpc_id      = aws_vpc.vpc.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_rds_mysql_ipv4_in" {
+  security_group_id = aws_security_group.rds-sg.id
+  cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
+  from_port   = 3306
+  ip_protocol = "tcp"
+  to_port     = 3306
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
+  security_group_id = aws_security_group.rds-sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}
 
 
 #ACL restraining access to ressources from C9 instances
