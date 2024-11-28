@@ -63,7 +63,7 @@ resource "aws_instance" "bastion" {
   }
 }
 
-#Create RDS Instance
+#Create DB Instance
 resource "aws_db_instance" "rds" {
   allocated_storage    = 20
   instance_class       = "db.t4g.micro"
@@ -72,6 +72,7 @@ resource "aws_db_instance" "rds" {
   username             = "admin"
   password             = "securepassword"
   multi_az             = true
+  identifier = "${local.name}-nextcloud-db"
   db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
 }
