@@ -9,8 +9,8 @@ resource "aws_route53_record" "nextcloud" {
   name    = "nextcloud-${local.user}"
   type    = "A"
   alias {
-    name                   = aws_lb.nextcloud.dns_name
-    zone_id                = aws_lb.nextcloud.zone_id
+    name                   = aws_lb.nextcloud-alb.dns_name
+    zone_id                = aws_lb.nextcloud-alb.zone_id
     evaluate_target_health = true
   }
 }
