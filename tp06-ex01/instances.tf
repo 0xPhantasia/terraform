@@ -64,14 +64,14 @@ resource "aws_instance" "bastion" {
 }
 
 #Create RDS Instance
-resource "aws_db_instance" "rds" {
-  allocated_storage    = 20
-  instance_class       = "db.t4g.micro"
-  engine               = "mysql"
-  engine_version       = "8.0"
-  username             = "admin"
-  password             = "admin"
-  multi_az             = true
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
-  vpc_security_group_ids = [aws_security_group.rds-sg.id]
-}
+#resource "aws_db_instance" "rds" {
+#  allocated_storage    = 20
+#  instance_class       = "db.t4g.micro"
+#  engine               = "mysql"
+#  engine_version       = "8.0"
+#  username             = "admin"
+#  password             = "admin"
+#  multi_az             = true
+#  db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
+#  vpc_security_group_ids = [aws_security_group.rds-sg.id]
+#}
