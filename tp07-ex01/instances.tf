@@ -46,7 +46,7 @@ resource "aws_instance" "bastion" {
 
 #Create DB Instance
 resource "aws_db_instance" "nextcloud" {
-  db_name = "nextcloud-db"
+  db_name = "nextcloudDB"
   allocated_storage    = 20
   instance_class       = "db.t4g.micro"
   engine               = "mysql"
