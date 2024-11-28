@@ -72,6 +72,6 @@ resource "aws_db_instance" "rds" {
   username             = "admin"
   password             = "admin"
   multi_az             = true
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet.0.name
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
 }
