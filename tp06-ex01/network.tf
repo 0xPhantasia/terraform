@@ -80,7 +80,7 @@ resource "aws_eip" "eip" {
 #Create NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip.allocation_id
-  subnet_id     = values(aws_subnet.private_subnets)[0].id
+  subnet_id     = values(aws_subnet.public_subnets)[0].id
   depends_on = [aws_internet_gateway.internet_gateway]
 }
 
