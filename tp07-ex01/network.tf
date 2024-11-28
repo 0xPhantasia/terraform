@@ -88,7 +88,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 }
 
 #Creating Application Load Balancer
-resource "aws_lb" "nextcloud-alb" {
+resource "aws_lb" "nextcloud" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb-sg.id]
@@ -97,7 +97,7 @@ resource "aws_lb" "nextcloud-alb" {
 }
 
 #Setting ALB target group
-resource "aws_lb_target_group" "nextcloud-alb" {
+resource "aws_lb_target_group" "nextcloud" {
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.vpc.id
@@ -115,21 +115,21 @@ resource "aws_lb_target_group" "nextcloud-alb" {
 }
 
 #Attach Nextcloud instance to nextcloud ALB target group
-resource "aws_lb_target_group_attachment" "nextcloud-alb" {
-  target_group_arn = aws_lb_target_group.nextcloud-alb.arn
+resource "aws_lb_target_group_attachment" "nextcloud" {
+  target_group_arn = aws_lb_target_group.nextcloud.arn
   target_id        = aws_instance.nextcloud.id
   port             = 80
 }
 
 #Config ALB listener
-resource "aws_lb_listener" "nextcloud-alb" {
-  load_balancer_arn = aws_lb.nextcloud-alb.arn
+resource "aws_lb_listener" "nextcloud" {
+  load_balancer_arn = aws_lb.nextcloud.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
     type = "forward"
-    target_group_arn = aws_lb_target_group.nextcloud-alb.arn
+    target_group_arn = aws_lb_target_group.nextcloud.arn
   }
 }
 
