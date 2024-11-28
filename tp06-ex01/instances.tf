@@ -70,7 +70,7 @@ resource "aws_db_instance" "rds" {
   engine               = "mysql"
   engine_version       = "8.0"
   username             = "admin"
-  password             = "admin"
+  password             = "securepassword"
   multi_az             = true
   db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
