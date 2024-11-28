@@ -17,7 +17,7 @@ locals {
       db_name = aws_db_instance.nextcloud.db_name,
       db_host = aws_db_instance.nextcloud.address,
       db_user = aws_db_instance.nextcloud.username,
-      db_pass = random_password.rds_nextcloud.result,
+      db_pass = random_password.nextcloud.result,
       fqdn    = aws_route53_record.nextcloud.fqdn,
   })
 }
