@@ -122,7 +122,7 @@ resource "aws_lb_target_group_attachment" "nextcloud-alb" {
 }
 
 #Config ALB listener
-resource "aws_lb_listener" "nextcloud-alb-listener" {
+resource "aws_lb_listener" "nextcloud-alb" {
   load_balancer_arn = aws_lb.nextcloud-alb.arn
   port              = "80"
   protocol          = "HTTP"
