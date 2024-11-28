@@ -9,13 +9,13 @@
 #}
 
 # Create EFS
-resource "aws_efs_file_system" "nextcloud-efs" {
+resource "aws_efs_file_system" "nextcloud" {
   creation_token = local.name
   encrypted = true # Au repos ?
 }
 
 # Mount EFS to EC2 instances to every private subnet
-resource "aws_efs_mount_target" "nextcloud-efs-mount" {
+resource "aws_efs_mount_target" "nextcloud" {
   file_system_id = aws_efs_file_system.nextcloud-efs.id
   for_each = aws_subnet.private_subnets
   subnet_id      = each.value.id
