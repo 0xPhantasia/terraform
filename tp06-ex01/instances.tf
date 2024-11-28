@@ -53,7 +53,7 @@ resource "aws_instance" "nextcloud" {
 resource "aws_instance" "bastion" {
   ami                    = data.aws_ami.ubuntu_latest.id
   instance_type          = "t3.micro"
-  subnet_id              = values(aws_subnet.private_subnets)[0].id #Ugly
+  subnet_id              = values(aws_subnet.public_subnets)[0].id
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
   key_name               = aws_key_pair.bastion.key_name
 #  user_data = "${file("bastion-config.sh")}"
