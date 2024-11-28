@@ -1,4 +1,5 @@
 # Retrieve the latest Ubuntu AMD64 AMI
+# Retrieve the latest Ubuntu 22.04 LTS AMD64 AMI
 data "aws_ami" "ubuntu_latest" {
   most_recent = true
 
@@ -6,7 +7,7 @@ data "aws_ami" "ubuntu_latest" {
 
   filter {
     name   = "name"
-    values = ["ubuntu*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
