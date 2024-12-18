@@ -7,7 +7,7 @@ resource "aws_autoscaling_group" "nextcloud_asg" {
 
   health_check_type = "ELB"
   target_group_arns = [aws_lb_target_group.nextcloud.arn]
-  
+
   depends_on = [aws_lb.nextcloud]
 
   launch_template {

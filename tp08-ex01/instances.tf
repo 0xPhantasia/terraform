@@ -49,10 +49,10 @@ data "aws_ami" "nextcloud_custom" {
 #}
 
 resource "aws_launch_template" "nextcloud" {
-  name_prefix   = "${local.name}-nextcloud-lt"
-  image_id      = data.aws_ami.nextcloud_custom.id
-  instance_type = "t3.micro"
-  key_name      = aws_key_pair.nextcloud.key_name
+  name_prefix            = "${local.name}-nextcloud-lt"
+  image_id               = data.aws_ami.nextcloud_custom.id
+  instance_type          = "t3.micro"
+  key_name               = aws_key_pair.nextcloud.key_name
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
 
   tag_specifications {

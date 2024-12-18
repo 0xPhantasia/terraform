@@ -85,7 +85,7 @@ resource "aws_security_group" "rds-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_rds_mysql_ipv4_in" {
   security_group_id = aws_security_group.rds-sg.id
-  cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
+  referenced_security_group_id         = aws_security_group.nextcloud-sg.id
   from_port         = 3306
   ip_protocol       = "tcp"
   to_port           = 3306
