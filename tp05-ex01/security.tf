@@ -11,8 +11,8 @@ resource "aws_security_group" "bastion-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
-  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
-  #  cidr_ipv4   = "195.7.117.146/32"
+#  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
+  cidr_ipv4   = "92.184.98.110/32"
   from_port   = 22
   ip_protocol = "tcp"
   to_port     = 22
@@ -84,19 +84,19 @@ resource "aws_network_acl" "acl" {
 
 #COMMENT OUT FOR C9 debugging
 #Applying ACL to all VPC private subnets
-#resource "aws_network_acl_association" "acl_association_private_subnets" {
-#  network_acl_id = aws_network_acl.acl.id
-#  for_each       = aws_subnet.private_subnets
-#  subnet_id      = each.value.id
-#}
-#
-##COMMENT OUT FOR C9 debugging
-##Applying ACL to all VPC public subnets
-#resource "aws_network_acl_association" "acl_association_public_subnets" {
-#  network_acl_id = aws_network_acl.acl.id
-#  for_each       = aws_subnet.public_subnets
-#  subnet_id      = each.value.id
-#}
+resource "aws_network_acl_association" "acl_association_private_subnets" {
+  network_acl_id = aws_network_acl.acl.id
+  for_each       = aws_subnet.private_subnets
+  subnet_id      = each.value.id
+}
+
+#COMMENT OUT FOR C9 debugging
+#Applying ACL to all VPC public subnets
+resource "aws_network_acl_association" "acl_association_public_subnets" {
+  network_acl_id = aws_network_acl.acl.id
+  for_each       = aws_subnet.public_subnets
+  subnet_id      = each.value.id
+}
 
 
 
