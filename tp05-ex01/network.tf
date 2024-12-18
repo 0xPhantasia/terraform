@@ -7,7 +7,7 @@ locals {
 
 #Deploy VPC
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr
+  cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
 }
 
@@ -42,7 +42,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
 }
@@ -69,13 +69,13 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 #Create EIP
 resource "aws_eip" "eip" {
-  domain   = "vpc"
+  domain = "vpc"
 }
 
 #Create NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip.allocation_id
   subnet_id     = aws_subnet.public_subnets[keys(aws_subnet.public_subnets)[0]].id #Ugly
-  depends_on = [aws_internet_gateway.internet_gateway]
+  depends_on    = [aws_internet_gateway.internet_gateway]
 }
 

@@ -6,13 +6,13 @@ data "http" "c9_public_ip" {
 ### Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
   description = "Nextcloud Security Group"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
   cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
-#  cidr_ipv4   = "195.7.117.146/32"
+  #  cidr_ipv4   = "195.7.117.146/32"
   from_port   = 22
   ip_protocol = "tcp"
   to_port     = 22
@@ -28,7 +28,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_bastion_ssh_ipv4_out" {
 ### Nextcloud Security Group
 resource "aws_security_group" "nextcloud-sg" {
   description = "Nextcloud Security Group"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_nextcloud_ssh_ipv4_in" {
@@ -40,11 +40,11 @@ resource "aws_vpc_security_group_ingress_rule" "allow_nextcloud_ssh_ipv4_in" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_nextcloud_http_ipv4_in" {
-  security_group_id = aws_security_group.nextcloud-sg.id
+  security_group_id            = aws_security_group.nextcloud-sg.id
   referenced_security_group_id = aws_security_group.lb-sg.id
-  from_port         = 80
-  ip_protocol       = "tcp"
-  to_port           = 80
+  from_port                    = 80
+  ip_protocol                  = "tcp"
+  to_port                      = 80
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_nextcloud_all_ipv4_out" {
@@ -63,17 +63,17 @@ resource "aws_security_group" "efs-sg" {
 resource "aws_vpc_security_group_ingress_rule" "allow_efs_nfs_ipv4_in" {
   security_group_id = aws_security_group.efs-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 2049
-  ip_protocol = "tcp"
-  to_port     = 2049
+  from_port         = 2049
+  ip_protocol       = "tcp"
+  to_port           = 2049
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_efs_nfs_ipv4_out" {
   security_group_id = aws_security_group.efs-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 2049
-  ip_protocol = "tcp"
-  to_port     = 2049
+  from_port         = 2049
+  ip_protocol       = "tcp"
+  to_port           = 2049
 }
 
 
@@ -86,9 +86,9 @@ resource "aws_security_group" "rds-sg" {
 resource "aws_vpc_security_group_ingress_rule" "allow_rds_mysql_ipv4_in" {
   security_group_id = aws_security_group.rds-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 3306
-  ip_protocol = "tcp"
-  to_port     = 3306
+  from_port         = 3306
+  ip_protocol       = "tcp"
+  to_port           = 3306
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
@@ -101,15 +101,15 @@ resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
 #ALB Security Group
 resource "aws_security_group" "lb-sg" {
   description = "Load Balancer Security Group"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_alb_http_ipv4_in" {
   security_group_id = aws_security_group.lb-sg.id
   cidr_ipv4         = "0.0.0.0/0"
-  from_port   = 80
-  ip_protocol = "tcp"
-  to_port     = 80
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_alb_all_ipv4_out" {

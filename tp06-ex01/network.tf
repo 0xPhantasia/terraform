@@ -7,13 +7,13 @@ locals {
 
 #Deploy VPC
 resource "aws_vpc" "vpc" {
-  cidr_block = var.vpc_cidr
+  cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
 }
 
 #Deploy the private subnets
 resource "aws_subnet" "private_subnets" {
-  for_each = zipmap(range(0, 3), data.aws_availability_zones.available.names)
+  for_each          = zipmap(range(0, 3), data.aws_availability_zones.available.names)
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.key)
   availability_zone = each.value
@@ -21,7 +21,7 @@ resource "aws_subnet" "private_subnets" {
 
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
-  for_each = zipmap(range(0, 3), data.aws_availability_zones.available.names)
+  for_each                = zipmap(range(0, 3), data.aws_availability_zones.available.names)
   vpc_id                  = aws_vpc.vpc.id
   cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.key + 100)
   availability_zone       = each.value
@@ -47,7 +47,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
 }
@@ -74,13 +74,13 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 #Create EIP
 resource "aws_eip" "eip" {
-  domain   = "vpc"
+  domain = "vpc"
 }
 
 #Create NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip.allocation_id
   subnet_id     = values(aws_subnet.public_subnets)[0].id
-  depends_on = [aws_internet_gateway.internet_gateway]
+  depends_on    = [aws_internet_gateway.internet_gateway]
 }
 

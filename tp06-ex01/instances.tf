@@ -22,7 +22,7 @@ resource "aws_instance" "nextcloud" {
   subnet_id              = values(aws_subnet.private_subnets)[0].id
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
   key_name               = aws_key_pair.nextcloud.key_name
-#  user_data = "${file("nextcloud-config.sh")}"
+  #  user_data = "${file("nextcloud-config.sh")}"
   user_data = <<-EOF
     #!/bin/bash
 
@@ -56,7 +56,7 @@ resource "aws_instance" "bastion" {
   subnet_id              = values(aws_subnet.public_subnets)[0].id
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
   key_name               = aws_key_pair.bastion.key_name
-#  user_data = "${file("bastion-config.sh")}"
+  #  user_data = "${file("bastion-config.sh")}"
 
   tags = {
     Name = "${local.name}-bastion"
@@ -65,15 +65,15 @@ resource "aws_instance" "bastion" {
 
 #Create DB Instance
 resource "aws_db_instance" "rds" {
-  allocated_storage    = 20
-  instance_class       = "db.t4g.micro"
-  engine               = "mysql"
-  engine_version       = "8.0"
-  username             = "admin"
-  password             = "securepassword"
-  multi_az             = true
-  identifier = "${local.name}-nextcloud-db"
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet.name
+  allocated_storage      = 20
+  instance_class         = "db.t4g.micro"
+  engine                 = "mysql"
+  engine_version         = "8.0"
+  username               = "admin"
+  password               = "securepassword"
+  multi_az               = true
+  identifier             = "${local.name}-nextcloud-db"
+  db_subnet_group_name   = aws_db_subnet_group.rds_subnet.name
   vpc_security_group_ids = [aws_security_group.rds-sg.id]
-  skip_final_snapshot = true
+  skip_final_snapshot    = true
 }

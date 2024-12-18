@@ -47,7 +47,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_nextcloud_all_ipv4_out" {
 #ACL restraining access to ressources from C9 instances
 resource "aws_network_acl" "acl" {
   vpc_id = aws_vpc.vpc.id
-  
+
   ingress {
     protocol   = "tcp"
     rule_no    = 50

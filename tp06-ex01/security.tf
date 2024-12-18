@@ -6,12 +6,12 @@ data "http" "c9_public_ip" {
 ### Bastion Security Group
 resource "aws_security_group" "bastion-sg" {
   description = "Nextcloud Security Group"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_bastion_ssh_ipv4_in" {
   security_group_id = aws_security_group.bastion-sg.id
-#  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
+  #  cidr_ipv4         = "${data.http.c9_public_ip.response_body}/32"
   cidr_ipv4   = "92.184.98.110/32"
   from_port   = 22
   ip_protocol = "tcp"
@@ -28,7 +28,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_bastion_ssh_ipv4_out" {
 ### Nextcloud Security Group
 resource "aws_security_group" "nextcloud-sg" {
   description = "Nextcloud Security Group"
-  vpc_id = aws_vpc.vpc.id
+  vpc_id      = aws_vpc.vpc.id
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_nextcloud_ssh_ipv4_in" {
@@ -55,17 +55,17 @@ resource "aws_security_group" "efs-sg" {
 resource "aws_vpc_security_group_ingress_rule" "allow_efs_nfs_ipv4_in" {
   security_group_id = aws_security_group.efs-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 2049
-  ip_protocol = "tcp"
-  to_port     = 2049
+  from_port         = 2049
+  ip_protocol       = "tcp"
+  to_port           = 2049
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_efs_nfs_ipv4_out" {
   security_group_id = aws_security_group.efs-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 2049
-  ip_protocol = "tcp"
-  to_port     = 2049
+  from_port         = 2049
+  ip_protocol       = "tcp"
+  to_port           = 2049
 }
 
 
@@ -78,9 +78,9 @@ resource "aws_security_group" "rds-sg" {
 resource "aws_vpc_security_group_ingress_rule" "allow_rds_mysql_ipv4_in" {
   security_group_id = aws_security_group.rds-sg.id
   cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
-  from_port   = 3306
-  ip_protocol = "tcp"
-  to_port     = 3306
+  from_port         = 3306
+  ip_protocol       = "tcp"
+  to_port           = 3306
 }
 
 resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
@@ -93,7 +93,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_rds_mysql_ipv4_out" {
 # ACL restraining access to ressources from C9 instances
 resource "aws_network_acl" "acl" {
   vpc_id = aws_vpc.vpc.id
-  
+
   ingress {
     protocol   = "tcp"
     rule_no    = 50
@@ -103,16 +103,17 @@ resource "aws_network_acl" "acl" {
     to_port    = 22
   }
 }
-COMMENT OUT FOR C9 debugging
-Applying ACL to all VPC private subnets
+
+# COMMENT OUT FOR C9 debugging
+# Applying ACL to all VPC private subnets
 resource "aws_network_acl_association" "acl_association_private_subnets" {
   network_acl_id = aws_network_acl.acl.id
   for_each       = aws_subnet.private_subnets
   subnet_id      = each.value.id
 }
 
-#COMMENT OUT FOR C9 debugging
-#Applying ACL to all VPC public subnets
+# COMMENT OUT FOR C9 debugging
+# Applying ACL to all VPC public subnets
 resource "aws_network_acl_association" "acl_association_public_subnets" {
   network_acl_id = aws_network_acl.acl.id
   for_each       = aws_subnet.public_subnets
