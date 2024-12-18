@@ -34,56 +34,56 @@ data "aws_ami" "ubuntu_latest" {
 #}
 
 
-##Create Nextcloud Instance
-#resource "aws_instance" "nextcloud" {
-#  ami                    = data.aws_ami.ubuntu_latest.id
-#  instance_type          = "t3.micro"
-#  subnet_id              = values(aws_subnet.private_subnets)[0].id
-#  vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
-#  key_name               = aws_key_pair.nextcloud.key_name
-#  user_data              = local.nextcloud_userdata
-#
-#  tags = {
-#    Name = "${local.name}-nextcloud"
-#  }
-#}
-
-resource "aws_launch_template" "nextcloud" {
-  name_prefix   = "${local.name}-nextcloud-lt"
-  image_id      = data.aws_ami.nextcloud_custom.id
-  instance_type = "t3.micro"
-  key_name      = aws_key_pair.nextcloud.key_name
+#Create Nextcloud Instance
+resource "aws_instance" "nextcloud" {
+  ami                    = data.aws_ami.ubuntu_latest.id
+  instance_type          = "t3.micro"
+  subnet_id              = values(aws_subnet.private_subnets)[0].id
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
-
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name  = "${local.name}-nextcloud-instance"
-      Owner = local.user
-    }
-  }
-
-  tag_specifications {
-    resource_type = "volume"
-    tags = {
-      Name  = "${local.name}-nextcloud-volume"
-      Owner = local.user
-    }
-  }
-
-  tag_specifications {
-    resource_type = "network-interface"
-    tags = {
-      Name  = "${local.name}-nextcloud-nic"
-      Owner = local.user
-    }
-  }
+  key_name               = aws_key_pair.nextcloud.key_name
+  user_data              = local.nextcloud_userdata
 
   tags = {
-    Name  = "${local.name}-nextcloud-lt"
-    Owner = local.user
+    Name = "${local.name}-nextcloud"
   }
 }
+
+#resource "aws_launch_template" "nextcloud" {
+#  name_prefix   = "${local.name}-nextcloud-lt"
+#  image_id      = data.aws_ami.nextcloud_custom.id
+#  instance_type = "t3.micro"
+#  key_name      = aws_key_pair.nextcloud.key_name
+#  vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
+#
+#  tag_specifications {
+#    resource_type = "instance"
+#    tags = {
+#      Name  = "${local.name}-nextcloud-instance"
+#      Owner = local.user
+#    }
+#  }
+#
+#  tag_specifications {
+#    resource_type = "volume"
+#    tags = {
+#      Name  = "${local.name}-nextcloud-volume"
+#      Owner = local.user
+#    }
+#  }
+#
+#  tag_specifications {
+#    resource_type = "network-interface"
+#    tags = {
+#      Name  = "${local.name}-nextcloud-nic"
+#      Owner = local.user
+#    }
+#  }
+#
+#  tags = {
+#    Name  = "${local.name}-nextcloud-lt"
+#    Owner = local.user
+#  }
+#}
 
 
 #Create Bastion Instance
