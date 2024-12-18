@@ -1,20 +1,20 @@
 # Retrieve the latest Ubuntu AMD64 AMI
 # Retrieve the latest Ubuntu 22.04 LTS AMD64 AMI
-#data "aws_ami" "ubuntu_latest" {
-#  most_recent = true
-#
-#  owners = ["099720109477"] # Canonical's AWS Account ID
-#
-#  filter {
-#    name   = "name"
-#    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-#  }
-#
-#  filter {
-#    name   = "virtualization-type"
-#    values = ["hvm"]
-#  }
-#}
+data "aws_ami" "ubuntu_latest" {
+  most_recent = true
+
+  owners = ["099720109477"] # Canonical's AWS Account ID
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
 
 # Recover custom made AMI
 data "aws_ami" "nextcloud_custom" {
