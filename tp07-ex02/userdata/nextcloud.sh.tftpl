@@ -69,12 +69,12 @@ if [ ! -d /mnt/efs/nextcloud ]; then
 
     # Install Nextcloud
     sudo -u www-data php occ maintenance:install \
-        --database='mysql' \
-        --database-name='${db_name}' \
-        --database-host='${db_host}' \
-        --database-user='${db_user}' \
-        --database-pass='${db_pass}' \
-        --admin-pass='N3xtcl0ud!'
+        --database="mysql" \
+        --database-name="${db_name}" \
+        --database-host="${db_host}" \
+        --database-user="${db_user}" \
+        --database-pass="${db_pass}" \
+        --admin-pass="N3xtcl0ud!"
 
     set -x # Set xtrace back
 
@@ -90,11 +90,11 @@ else
     mount --bind /mnt/efs/nextcloud/data /data/www/nextcloud/data
 fi
 
-echo '/mnt/efs/nextcloud/config /data/www/nextcloud/config none _netdev,noatime,bind,defaults 0 0' | sudo tee -a /etc/fstab
-echo '/mnt/efs/nextcloud/data /data/www/nextcloud/data none _netdev,noatime,bind,defaults 0 0' | sudo tee -a /etc/fstab
+echo "/mnt/efs/nextcloud/config /data/www/nextcloud/config none _netdev,noatime,bind,defaults 0 0" | sudo tee -a /etc/fstab
+echo "/mnt/efs/nextcloud/data /data/www/nextcloud/data none _netdev,noatime,bind,defaults 0 0" | sudo tee -a /etc/fstab
 
 # Configure Apache
-sudo sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+sudo sed -i "s/AllowOverride None/AllowOverride All/g" /etc/apache2/apache2.conf
 
 cat >/etc/apache2/sites-available/nextcloud.conf <<EOF
 <VirtualHost *:80>
