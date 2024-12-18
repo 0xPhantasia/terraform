@@ -1,32 +1,39 @@
-resource "aws_autoscaling_group" "nextcloud" {
-  name                      = "${local.name}-nextcloud"
-  desired_capacity          = 1
-  min_size                  = 1
-  max_size                  = 1
-  health_check_type         = "ELB"
-  health_check_grace_period = 300
-
-  # Utiliser les subnets privés sur les 3 AZ
+resource "aws_autoscaling_group" "nextcloud_asg" {
+  name                = "${local.name}-nextcloud-asg"
+  desired_capacity    = 1
+  min_size            = 1
+  max_size            = 3
   vpc_zone_identifier = values(aws_subnet.private_subnets)[*].id
 
-  # Utiliser le Launch Template nouvellement créé
+  health_check_type = "ELB"
+  target_group_arns = [aws_lb_target_group.nextcloud.arn]
+  
+  depends_on = [aws_lb.nextcloud]
+
   launch_template {
     id      = aws_launch_template.nextcloud.id
     version = "$Latest"
   }
 
-  # Attache l'ASG au target group de l'ALB
-  target_group_arns = [aws_lb_target_group.nextcloud.arn]
-
-  # Permet une mise à jour propre (évite de détruire avant de créer une nouvelle instance)
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  # Tags de l'ASG
   tag {
     key                 = "Owner"
     value               = local.user
-    propagate_at_launch = false
+    propagate_at_launch = true
   }
+}
+
+resource "aws_autoscaling_policy" "scaleout_policy" {
+  name                   = "${local.user}-${local.tp}-nextcloud-scaleout"
+  scaling_adjustment     = 1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.nextcloud_asg.name
+}
+
+resource "aws_autoscaling_policy" "scalein_policy" {
+  name                   = "${local.user}-${local.tp}-nextcloud-scalein"
+  scaling_adjustment     = -1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = aws_autoscaling_group.nextcloud_asg.name
 }
