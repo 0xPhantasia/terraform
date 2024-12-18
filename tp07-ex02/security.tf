@@ -62,7 +62,7 @@ resource "aws_security_group" "efs-sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_efs_nfs_ipv4_in" {
   security_group_id = aws_security_group.efs-sg.id
-  cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
+  referenced_security_group_id         = aws_security_group.nextcloud-sg.id
   from_port         = 2049
   ip_protocol       = "tcp"
   to_port           = 2049
@@ -70,7 +70,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_efs_nfs_ipv4_in" {
 
 resource "aws_vpc_security_group_egress_rule" "allow_efs_nfs_ipv4_out" {
   security_group_id = aws_security_group.efs-sg.id
-  cidr_ipv4         = "${aws_instance.nextcloud.private_ip}/32"
+  referenced_security_group_id         = aws_security_group.nextcloud-sg.id
   from_port         = 2049
   ip_protocol       = "tcp"
   to_port           = 2049
