@@ -117,11 +117,11 @@ resource "aws_lb_target_group" "nextcloud" {
 }
 
 #Attach Nextcloud instance to nextcloud ALB target group
-resource "aws_lb_target_group_attachment" "nextcloud" {
-  target_group_arn = aws_lb_target_group.nextcloud.arn
-  target_id        = aws_instance.nextcloud.id
-  port             = 80
-}
+#resource "aws_lb_target_group_attachment" "nextcloud" {
+#  target_group_arn = aws_lb_target_group.nextcloud.arn
+#  target_id        = aws_instance.nextcloud.id
+#  port             = 80
+#}
 
 #Config ALB listener
 resource "aws_lb_listener" "nextcloud" {
