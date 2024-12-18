@@ -1,37 +1,37 @@
-## Retrieve the latest Ubuntu AMD64 AMI
-## Retrieve the latest Ubuntu 22.04 LTS AMD64 AMI
-#data "aws_ami" "ubuntu_latest" {
-#  most_recent = true
-#
-#  owners = ["099720109477"] # Canonical's AWS Account ID
-#
-#  filter {
-#    name   = "name"
-#    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
-#  }
-#
-#  filter {
-#    name   = "virtualization-type"
-#    values = ["hvm"]
-#  }
-#}
-
-# Recover custom made AMI
-data "aws_ami" "nextcloud_custom" {
+# Retrieve the latest Ubuntu AMD64 AMI
+# Retrieve the latest Ubuntu 22.04 LTS AMD64 AMI
+data "aws_ami" "ubuntu_latest" {
   most_recent = true
 
-  owners = ["self"]
+  owners = ["099720109477"] # Canonical's AWS Account ID
 
   filter {
     name   = "name"
-    values = ["${local.user}-${local.tp}-nextcloud*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
-    name   = "state"
-    values = ["available"]
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
+
+## Recover custom made AMI
+#data "aws_ami" "nextcloud_custom" {
+#  most_recent = true
+#
+#  owners = ["self"]
+#
+#  filter {
+#    name   = "name"
+#    values = ["${local.user}-${local.tp}-nextcloud*"]
+#  }
+#
+#  filter {
+#    name   = "state"
+#    values = ["available"]
+#  }
+#}
 
 
 ##Create Nextcloud Instance
@@ -54,7 +54,7 @@ resource "aws_launch_template" "nextcloud" {
   instance_type = "t3.micro"
   key_name      = aws_key_pair.nextcloud.key_name
   vpc_security_group_ids = [aws_security_group.nextcloud-sg.id]
-  
+
   tag_specifications {
     resource_type = "instance"
     tags = {
